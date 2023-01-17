@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2;
 using CRUDCloudDb.Interfaces;
+using CRUDCloudDb.Mappers;
 using CRUDCloudDb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IDynamoDbService, DynamoDbTableService>();
 builder.Services.AddScoped<IAmazonDynamoDB, AmazonDynamoDBClient>();
+builder.Services.AddScoped<ICreateControllerToServiceMapper, CreateControllerToServiceMapper>();
+builder.Services.AddScoped<IPutControllerToServiceRequest, PutControllerToServiceRequestMapper>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

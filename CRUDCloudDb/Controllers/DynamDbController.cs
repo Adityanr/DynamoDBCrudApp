@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using CRUDCloudDb.Interfaces;
+using CRUDCloudDb.Mappers;
 using CRUDCloudDb.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +13,20 @@ namespace CRUDCloudDb.Controllers
 
         private readonly IDynamoDbService _dynamoDbService;
 
+        private readonly ICreateControllerToServiceMapper _createControllerToServiceMapper;
+
+        private readonly IPutControllerToServiceRequest _putControllerToServiceRequest;
+
         #region Constructor
 
         public DynamoDbController(ILogger<DynamoDbController> logger,
-            IDynamoDbService dynamoDbService)
+            IDynamoDbService dynamoDbService, ICreateControllerToServiceMapper createControllerToServiceMapper,
+            IPutControllerToServiceRequest putControllerToServiceRequest)
         {
             _logger = logger;
             _dynamoDbService = dynamoDbService;
+            _createControllerToServiceMapper = createControllerToServiceMapper;
+            _putControllerToServiceRequest = putControllerToServiceRequest;
         }
 
         #endregion
@@ -26,37 +34,19 @@ namespace CRUDCloudDb.Controllers
         #region Public Methods
 
         [HttpPost("create")]
-        public async Task<CreateControllerResponse> Create(
+        public async Task<CreateTableResponse> Create(
             CreateControllerRequest createControllerRequest)
         {
-            var result = await _dynamoDbService.Create(new CreateServiceRequest
-            {
-                TableName = createControllerRequest.TableName,
-                PrimaryKey = createControllerRequest.PrimaryKey,
-                ReadCapacityUnits = createControllerRequest.ReadCapacityUnits,
-                WriteCapacityUnits = createControllerRequest.WriteCapacityUnits
-            });
-
-            return new CreateControllerResponse
-            {
-                TableId = result.TableId,
-                TableName = result.TableName,
-                TableStatus = result.TableStatus,
-                Status = result.Status
-            };
+            return await _dynamoDbService.Create(
+                _createControllerToServiceMapper.MapToCreateTableRequest(createControllerRequest));
         }
 
         [HttpPost("put")]
         public async Task<PutItemResponse> Put(
-            PutEmployeeServiceRequest putEmployeeControllerRequest)
+            PutEmployeeControllerRequest putEmployeeControllerRequest)
         {
-            return await _dynamoDbService.Put(new PutEmployeeServiceRequest
-            {
-                TableName = putEmployeeControllerRequest.TableName,
-                Id = putEmployeeControllerRequest.Id,
-                Name = putEmployeeControllerRequest.Name,
-                Salary = putEmployeeControllerRequest.Salary
-            });
+            return await _dynamoDbService.Put(_putControllerToServiceRequest.MapToPutItemRequest(
+                putEmployeeControllerRequest));
         }
 
         #endregion

@@ -5,8 +5,8 @@ namespace CRUDCloudDb.Interfaces
 {
     public interface IDynamoDbService
     {
-        Task<CreateServiceResponse> Create(CreateServiceRequest createServiceRequest);
+        Task<CreateTableResponse> Create(CreateTableRequest createTableRequest);
 
-        Task<PutItemResponse> Put(PutEmployeeServiceRequest request);
+        Task<PutItemResponse> Put(PutItemRequest request);
     }
 }
