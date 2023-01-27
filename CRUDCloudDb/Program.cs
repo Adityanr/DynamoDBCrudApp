@@ -11,6 +11,8 @@ builder.Services.AddScoped<IDynamoDbService, DynamoDbTableService>();
 builder.Services.AddScoped<IAmazonDynamoDB, AmazonDynamoDBClient>();
 builder.Services.AddScoped<ICreateControllerToServiceMapper, CreateControllerToServiceMapper>();
 builder.Services.AddScoped<IPutControllerToServiceRequest, PutControllerToServiceRequestMapper>();
+builder.Services.AddScoped<IDeleteControllerToServiceRequestMapper, DeleteControllerToServiceRequestMapper>();
+builder.Services.AddScoped<IGetControllerToServiceRequestMapper, GetControllerToServiceRequestMapper>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

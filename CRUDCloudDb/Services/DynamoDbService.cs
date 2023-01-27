@@ -34,6 +34,16 @@ namespace CRUDCloudDb.Services
             return await _amazonDynamoDB.PutItemAsync(request);
         }
 
+        public async Task<DeleteItemResponse> Delete(DeleteItemRequest deleteItemRequest)
+        {
+            return await _amazonDynamoDB.DeleteItemAsync(deleteItemRequest);
+        }
+
+        public async Task<GetItemResponse> Get(GetItemRequest getItemRequest)
+        {
+            return await _amazonDynamoDB.GetItemAsync(getItemRequest);
+        }
+
         #endregion
     }
 }
