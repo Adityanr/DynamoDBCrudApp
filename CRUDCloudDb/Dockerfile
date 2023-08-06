@@ -4,13 +4,14 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
+EXPOSE 5001
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["CRUDCloudDb/CRUDCloudDb.csproj", "CRUDCloudDb/"]
-RUN dotnet restore "CRUDCloudDb/CRUDCloudDb.csproj"
+COPY ["CRUDCloudDb.csproj", ""]
+RUN dotnet restore "CRUDCloudDb.csproj"
 COPY . .
-WORKDIR "/src/CRUDCloudDb"
+WORKDIR "/src"
 RUN dotnet build "CRUDCloudDb.csproj" -c Release -o /app/build
 
 FROM build AS publish

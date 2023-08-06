@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crub-dynamo-db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crud-dynamo-db
+  template:
+    metadata:
+      labels:
+        app: crud-dynamo-db
+    spec:
+      containers:
+        - name: crud-dynamo-db
+          image: 9544867908/crubcloud:latest
+          ports:
+            - containerPort: 80
+          envFrom:
+          - configMapRef:
+              name: aws-credentials
